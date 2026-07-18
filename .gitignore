@@ -1,0 +1,25 @@
+# Build outputs
+example/addons/godot_rnnoise/bin/
+.sconsign.dblite
+compile_commands.json
+.scons_cache/
+src/*.os
+src/*.o
+
+# godot-cpp build artifacts (source is a submodule, but it builds in-place)
+godot-cpp/bin/
+godot-cpp/gen/
+
+# RNNoise build artifacts
+noise-suppression-for-voice/external/rnnoise/cmake_build_out/
+
+# Godot editor cruft in the example project
+example/.godot/
+example/.import/
+example/*.translation
+
+# Editor/OS
+.vscode/
+.vs/
+*.swp
+.DS_Store

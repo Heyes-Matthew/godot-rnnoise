@@ -1,0 +1,21 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="godot-rnnoise example"
+run/main_scene="res://mic_bus_demo.tscn"
+config/features=PackedStringArray("4.3")
+
+[audio]
+
+driver/enable_input=true
+driver/mix_rate=48000
+buses/default_bus_layout="res://default_bus_layout.tres"

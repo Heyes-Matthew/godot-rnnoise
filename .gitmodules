@@ -1,0 +1,7 @@
+[submodule "godot-cpp"]
+	path = godot-cpp
+	url = https://github.com/godotengine/godot-cpp.git
+	branch = 4.3
+[submodule "noise-suppression-for-voice"]
+	path = noise-suppression-for-voice
+	url = https://github.com/werman/noise-suppression-for-voice.git

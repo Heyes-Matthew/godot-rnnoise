@@ -1,0 +1,52 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux
+            os: ubuntu-latest
+            platform: linux
+          - name: Windows
+            os: windows-latest
+            platform: windows
+          - name: macOS
+            os: macos-latest
+            platform: macos
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install SCons
+        run: pip install scons
+
+      - name: Install Ninja (Linux/macOS)
+        if: matrix.platform != 'windows'
+        uses: seanmiddleditch/gha-setup-ninja@master
+
+      - name: Build (template_debug)
+        run: scons platform=${{ matrix.platform }} target=template_debug -j2
+
+      - name: Build (template_release)
+        run: scons platform=${{ matrix.platform }} target=template_release -j2
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-rnnoise-${{ matrix.platform }}
+          path: example/addons/godot_rnnoise/bin/
+          if-no-files-found: error
