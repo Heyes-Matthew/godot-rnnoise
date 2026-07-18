@@ -54,7 +54,8 @@ errors on a fresh checkout, open the project in the editor once first.
 
 ## Licensing
 
-This extension's own code is BSD-licensed (matching RNNoise). RNNoise is
+This extension's own code is BSD-3-Clause licensed (matching RNNoise; see
+`LICENSE`). RNNoise is
 vendored via the [`werman/noise-suppression-for-voice`](https://github.com/werman/noise-suppression-for-voice)
 submodule, used only for the `external/rnnoise/` subdirectory it contains
 (vendored [xiph/rnnoise](https://github.com/xiph/rnnoise) plus a portable
