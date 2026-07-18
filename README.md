@@ -3,9 +3,9 @@
 A Godot 4 GDExtension that exposes [RNNoise](https://github.com/xiph/rnnoise)
 (a recurrent-neural-network noise suppressor) directly to GDScript, as both:
 
-- **`AudioEffectRNNoise`** — drop it onto an Audio Bus in the editor to denoise
+- **`AudioEffectRNNoise`**: drop it onto an Audio Bus in the editor to denoise
   live audio (e.g. microphone input) with no script code.
-- **`RNNoiseDenoiser`** — a `RefCounted` class for scripted, frame-by-frame
+- **`RNNoiseDenoiser`**: a `RefCounted` class for scripted, frame-by-frame
   denoising of any mono float buffer (files, network audio, etc.).
 
 RNNoise operates on fixed 480-sample (10ms) mono frames at a 48kHz sample rate.
@@ -29,17 +29,17 @@ If you cloned without `--recurse-submodules`, run
 `git submodule update --init --recursive` first.
 
 Built libraries are written to `example/addons/godot_rnnoise/bin/`. That
-`addons/godot_rnnoise/` folder is a self-contained Godot addon — copy it into
+`addons/godot_rnnoise/` folder is a self-contained Godot addon; copy it into
 any Godot 4.3+ project's `addons/` directory to use the extension there.
 
 ## Example project
 
 `example/` is a runnable Godot project demonstrating both APIs:
 
-- `mic_bus_demo.tscn` — live microphone denoising via `AudioEffectRNNoise` on
+- `mic_bus_demo.tscn`: live microphone denoising via `AudioEffectRNNoise` on
   a bus, with a checkbox to A/B compare the effect on/off. Open it in the
   Godot 4.3 editor and run it (needs a working microphone).
-- `scripted_demo.gd` — a headless demo of `RNNoiseDenoiser`: synthesizes a
+- `scripted_demo.gd`: a headless demo of `RNNoiseDenoiser` that synthesizes a
   noisy tone, denoises it frame-by-frame, and prints the RMS noise level
   before/after. Run it with:
 
