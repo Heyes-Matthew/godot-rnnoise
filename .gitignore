@@ -23,3 +23,6 @@ example/*.translation
 .vs/
 *.swp
 .DS_Store
+
+# Local-only Claude Code instructions
+CLAUDE.md
