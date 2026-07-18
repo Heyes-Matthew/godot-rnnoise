@@ -1,5 +1,7 @@
 # godot-rnnoise
 
+[![Build](https://github.com/Heyes-Matthew/godot-rnnoise/actions/workflows/build.yml/badge.svg)](https://github.com/Heyes-Matthew/godot-rnnoise/actions/workflows/build.yml)
+
 A Godot 4 GDExtension that exposes [RNNoise](https://github.com/xiph/rnnoise)
 (a recurrent-neural-network noise suppressor) directly to GDScript, as both:
 
@@ -19,7 +21,7 @@ Requires [SCons](https://scons.org/), [CMake](https://cmake.org/), and a
 C/C++ toolchain (on Linux/macOS, also [Ninja](https://ninja-build.org/)).
 
 ```sh
-git clone --recurse-submodules <this-repo-url>
+git clone --recurse-submodules git@github.com:Heyes-Matthew/godot-rnnoise.git
 cd godot-rnnoise
 scons platform=<linux|windows|macos> target=template_debug
 scons platform=<linux|windows|macos> target=template_release
@@ -49,7 +51,7 @@ any Godot 4.3+ project's `addons/` directory to use the extension there.
 
 The first time you open `example/` (in the editor or headless), Godot needs
 one pass to discover and cache the GDExtension before classes like
-`RNNoiseDenoiser` become available to scripts — if you hit "Cannot get class"
+`RNNoiseDenoiser` become available to scripts; if you hit "Cannot get class"
 errors on a fresh checkout, open the project in the editor once first.
 
 ## Licensing
