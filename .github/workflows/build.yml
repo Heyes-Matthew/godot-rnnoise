@@ -50,3 +50,46 @@ jobs:
           name: godot-rnnoise-${{ matrix.platform }}
           path: example/addons/godot_rnnoise/bin/
           if-no-files-found: error
+
+  verify:
+    name: Verify on Godot ${{ matrix.godot_version }}
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        godot_version: ["4.3", "4.4", "4.5"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download built extension (linux)
+        uses: actions/download-artifact@v4
+        with:
+          name: godot-rnnoise-linux
+          path: example/addons/godot_rnnoise/bin/
+
+      - name: Download Godot ${{ matrix.godot_version }}
+        run: |
+          curl -L -o godot.zip "https://github.com/godotengine/godot/releases/download/${{ matrix.godot_version }}-stable/Godot_v${{ matrix.godot_version }}-stable_linux.x86_64.zip"
+          python3 -c "import zipfile; zipfile.ZipFile('godot.zip').extractall('.')"
+          mv Godot_v${{ matrix.godot_version }}-stable_linux.x86_64 godot
+          chmod +x godot
+
+      - name: Populate GDExtension cache
+        # The editor writes example/.godot/extension_list.cfg before this
+        # exits; on some Godot versions the headless editor crashes shortly
+        # after (a display-less editor-preview issue, unrelated to this
+        # extension) once the cache is already written, so don't fail here.
+        run: ./godot --headless --editor --path example --quit-after 2 || true
+
+      - name: Run scripted_demo.gd
+        run: ./godot --headless --path example --script res://scripted_demo.gd | tee output.log
+
+      - name: Check for GDExtension resolution errors
+        run: |
+          if grep -q "Cannot get class" output.log; then
+            echo "GDExtension classes failed to resolve on Godot ${{ matrix.godot_version }}"
+            exit 1
+          fi
+          grep -q "Denoised RMS" output.log
