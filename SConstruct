@@ -23,6 +23,13 @@ def build_rnnoise(target, source, env):
         extra_flags += ["-DCMAKE_POSITION_INDEPENDENT_CODE=ON"]
     if env["platform"] == "macos":
         extra_flags += ["-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64", "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.15"]
+    if env["platform"] == "windows":
+        # godot-cpp links the MSVC CRT statically (/MT) by default
+        # (use_static_cpp=True). CMake's own MSVC default is /MD, so without
+        # this the extension and RnNoise.lib disagree on which CRT to pull
+        # in and MSVC fails the link (LNK4098: defaultlib 'MSVCRT' conflicts).
+        crt = "MultiThreaded$<$<CONFIG:Debug>:Debug>" if env["use_static_cpp"] else "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL"
+        extra_flags += ["-DCMAKE_POLICY_DEFAULT_CMP0091=NEW", "-DCMAKE_MSVC_RUNTIME_LIBRARY=" + crt]
 
     generator_args = []
     if env["platform"] in ("linux", "macos"):
