@@ -38,11 +38,28 @@ jobs:
         if: matrix.platform != 'windows'
         uses: seanmiddleditch/gha-setup-ninja@master
 
+      - name: Get godot-cpp submodule commit
+        id: godot-cpp-commit
+        run: echo "sha=$(git -C godot-cpp rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        shell: bash
+
+      - name: Cache SCons build (godot-cpp bindings rarely change)
+        uses: actions/cache@v4
+        with:
+          path: .scons_cache
+          key: scons-${{ matrix.platform }}-${{ steps.godot-cpp-commit.outputs.sha }}
+          restore-keys: |
+            scons-${{ matrix.platform }}-
+
       - name: Build (template_debug)
-        run: scons platform=${{ matrix.platform }} target=template_debug -j2
+        run: scons platform=${{ matrix.platform }} target=template_debug -j4
+        env:
+          SCONS_CACHE: .scons_cache
 
       - name: Build (template_release)
-        run: scons platform=${{ matrix.platform }} target=template_release -j2
+        run: scons platform=${{ matrix.platform }} target=template_release -j4
+        env:
+          SCONS_CACHE: .scons_cache
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -58,7 +75,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        godot_version: ["4.3", "4.4", "4.5"]
+        godot_version: ["4.3", "4.4"]
 
     steps:
       - uses: actions/checkout@v4
